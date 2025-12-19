@@ -419,15 +419,15 @@ def generate_enhanced_reference_info(url: str, source_type: str, error_msg: str 
     elif "medium.com" in domain:
         content_hints.append("📝 Technical blog")
     elif "dev.to" in domain:
-        content_hints.append("👨‍💻 Developer community")
-    elif "csdn.net" in domain:
-        content_hints.append("🇨🇳 CSDN technical blog")
-    elif "juejin.cn" in domain:
-        content_hints.append("💎 Juejin technical article")
-    elif "zhihu.com" in domain:
-        content_hints.append("🧠 Zhihu technical discussion")
+        content_hints.append("👨‍💻 Developer Community")
+    elif "hackernoon.com" in domain:
+        content_hints.append("📝 Tech Article")
+    elif "medium.com" in domain:
+        content_hints.append("📝 Tech Blog")
+    elif "stackoverflow.com" in domain:
+        content_hints.append("❓ Tech Q&A")
     elif "blog" in domain:
-        content_hints.append("📖 Technical blog")
+        content_hints.append("📖 Technical Blog")
     elif "docs" in domain:
         content_hints.append("📚 Technical documentation")
     elif "wiki" in domain:
@@ -659,14 +659,6 @@ def validate_and_clean_links(content: str) -> str:
     # Detect and remove fake link patterns
     fake_link_patterns = [
         # Markdown link formats
-        r'\[([^\]]+)\]\(https?://blog\.csdn\.net/username/article/details/\d+\)',
-        r'\[([^\]]+)\]\(https?://github\.com/username/[^\)]+\)',
-        r'\[([^\]]+)\]\(https?://[^/]*example\.com[^\)]*\)',
-        r'\[([^\]]+)\]\(https?://[^/]*xxx\.com[^\)]*\)',
-        r'\[([^\]]+)\]\(https?://[^/]*test\.com[^\)]*\)',
-        r'\[([^\]]+)\]\(https?://localhost[^\)]*\)',
-        
-        # Added: more fake link patterns
         r'\[([^\]]+)\]\(https?://medium\.com/@[^/]+/[^\)]*\d{9,}[^\)]*\)',  # Medium fake articles
         r'\[([^\]]+)\]\(https?://github\.com/[^/]+/[^/\)]*education[^\)]*\)',  # GitHub fake education projects
         r'\[([^\]]+)\]\(https?://www\.kdnuggets\.com/\d{4}/\d{2}/[^\)]*\)',  # KDNuggets fake articles

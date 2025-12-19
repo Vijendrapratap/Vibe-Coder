@@ -55,35 +55,33 @@ class PromptOptimizer:
     
     def _build_optimization_prompt(self, user_idea: str) -> str:
         """Build optimization prompt"""
-        return f"""You are a professional product manager and technical consultant, skilled at expanding users' simple ideas into detailed product descriptions.
+        return f"""You are an expert Product Manager and System Architect, modeled after world-class tech leaders. Your goal is to take a simple user idea and expand it into a comprehensive, professional, and actionable product specification.
 
-Original user input:
+Original User Idea:
 {user_idea}
 
-Please help optimize this creative description to make it more detailed, specific, and professional. The optimized description should include the following elements:
+Please think step-by-step to optimize this idea:
+1.  **Analyze the Intent**: What is the core problem the user is trying to solve? Who is it for?
+2.  **Expand the Scope**: What minimal features are needed for an MVP? What "wow" features could be added?
+3.  **Technical Feasibility**: What is the high-level tech stack? (e.g., Mobile App vs Web App, AI integration).
+4.  **Refine the Pitch**: Rephrase the idea to be more professional and compelling.
 
-1. **Core Functionality**: Clearly define the main features and value of the product
-2. **Target Users**: Define the target user group for the product
-3. **Usage Scenarios**: Describe typical usage scenarios of the product
-4. **Technical Features**: Mention key technical features that may be required
-5. **Business Value**: Explain the market value and competitive advantages of the product
-
-Please output in the following JSON format:
+Output the result in the following JSON format:
 {{
-    "optimized_idea": "Optimized detailed product description",
+    "optimized_idea": "A detailed, professional description of the product (approx. 200-400 words). Include Core Features, Target Audience, and Key Differentiators.",
     "key_improvements": [
-        "Improvement 1",
-        "Improvement 2",
-        "Improvement 3"
+        "Added <Feature X> to solve <Problem Y>",
+        "Clarified target audience as <Audience Z>",
+        "suggested <Tech A> for better scalability"
     ],
-    "suggestions": "Further optimization suggestions"
+    "suggestions": "Brief strategic advice for the user (e.g., 'Focus on mobile-first', 'Consider using existing APIs for X')."
 }}
 
 Requirements:
-- Maintain the core idea of the original creative input
-- Use professional but easy-to-understand language
-- Length controlled between 200-400 words
-- Highlight the product's innovation and practicality"""
+- **Language**: English ONLY.
+- **Tone**: Professional, encouraging, and technically sound.
+- **Goal**: Make the idea ready for a development plan.
+"""
 
     def _call_ai_service(self, prompt: str) -> Dict[str, Any]:
         """Call AI service"""
@@ -155,14 +153,14 @@ Requirements:
         """Get optimization examples"""
         return [
             {
-                "original": "我想做一个购物网站",
-                "optimized": "Develop an intelligent shopping platform targeting young consumers, integrating AI recommendation system, social sharing features, and personalized user experience. The platform will offer multi-category product display, intelligent search, user review system, and convenient mobile payment functions, aiming to provide users with a personalized shopping experience and high-quality product recommendation service.",
-                "improvements": ["Define target users", "Specify core features", "Highlight technical features"]
+                "original": "I want to make a shopping website",
+                "optimized": "Develop an intelligent e-commerce platform targeting Gen Z consumers, integrating an AI-powered recommendation engine, social shopping features, and a seamless mobile-first experience. The platform will feature dynamic product feeds, real-time social proof, gamified loyalty rewards, and one-click checkout, aiming to redefine online shopping with hyper-personalization.",
+                "improvements": ["Defined target audience (Gen Z)", "Added specific features (AI, Social)", "Clarified Value Proposition"]
             },
             {
-                "original": "想搞个学习系统",
-                "optimized": "Build an AI-based personalized online learning management system that supports multimedia content display, learning progress tracking, intelligent question bank management, and teacher-student interaction features. The system will provide a complete digital learning solution for educational institutions and individual learners, including course management, assignment grading, learning analytics, and performance evaluation.",
-                "improvements": ["Expand feature description", "Clarify application scenarios", "Add technical highlights"]
+                "original": "Build a learning system",
+                "optimized": "Create a comprehensive Learning Management System (LMS) designed for corporate training and upskilling. Key features include interactive video modules, automated progress tracking with analytics dashboards, gamified assessments, and peer-to-peer discussion forums. The system will support multi-tenant architecture for scalability and offline mobile access for learning on the go.",
+                "improvements": ["Specified use case (Corporate Training)", "Added technical details (Multi-tenant, Offline)", "detailed core features"]
             }
         ]
 
