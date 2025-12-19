@@ -1,7 +1,16 @@
+"""
+Web Interface Module for Vibe-Coder.
+
+This module defines the Gradio-based user interface, including:
+- UI Layout and Style (CSS).
+- Event binding for buttons and inputs.
+- Interactions with the core Logic module.
+"""
+
 import gradio as gr
 import logging
-from logic import optimize_user_idea, generate_development_plan
-from explanation_manager import explanation_manager  # Needed for local handlers
+from .logic import optimize_user_idea, generate_development_plan
+from .explanation_manager import explanation_manager
 
 logger = logging.getLogger(__name__)
 

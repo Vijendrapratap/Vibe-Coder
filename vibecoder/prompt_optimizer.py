@@ -1,13 +1,16 @@
 """
-Prompt Optimizer Module
-Uses AI to optimize user input creative descriptions to improve the quality of generated reports
+Prompt Optimization Module.
+
+This module provides functionality to optimize user ideas using Chain-of-Thought (CoT)
+reasoning. It transforms simple one-liners into detailed, professional product descriptions
+ready for development planning.
 """
 
 import requests
 import json
 import logging
 from typing import Tuple, Dict, Any, Optional
-from config import config
+from .config import config
 
 logger = logging.getLogger(__name__)
 

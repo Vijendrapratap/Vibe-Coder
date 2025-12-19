@@ -1,7 +1,7 @@
 import logging
 import json
-from config import config
-from web_ui import create_ui
+from vibecoder.config import config
+from vibecoder.web_ui import create_ui
 
 # Configure logging
 logging.basicConfig(

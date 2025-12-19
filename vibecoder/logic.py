@@ -1,13 +1,22 @@
+"""
+Core Logic Module for Vibe-Coder.
+
+This module orchestrates the main business logic of the application, including:
+- User idea optimization via AI.
+- Fetching external knowledge (via MCP or direct requests).
+- Generating the final development plan.
+"""
+
 import logging
 import json
 import requests
 from datetime import datetime, timedelta
 from typing import Tuple, Dict, Any, List
 
-from config import config
-from prompt_optimizer import prompt_optimizer
-from explanation_manager import explanation_manager
-from utils import (
+from .config import config
+from .prompt_optimizer import prompt_optimizer
+from .explanation_manager import explanation_manager
+from .utils import (
     validate_input, 
     validate_url, 
     validate_and_fix_content, 
@@ -28,7 +37,7 @@ def optimize_user_idea(user_idea: str) -> Tuple[str, str]:
     success, optimized_idea, suggestions = prompt_optimizer.optimize_user_input(user_idea)
     
     if success:
-        optimization_info = f\"\"\"
+        optimization_info = f"""
 ## ✨ Idea Optimization Successful!
 
 **🎯 Optimization Suggestions:**
@@ -38,14 +47,14 @@ def optimize_user_idea(user_idea: str) -> Tuple[str, str]:
 - Use the optimized description directly to generate the plan
 - Manually adjust the optimization result as needed
 - Click "Re-optimize" to get different optimization suggestions
-\"\"\"
+"""
         return optimized_idea, optimization_info
     else:
         return user_idea, f"⚠️ Optimization failed: {suggestions}"
 
 def fetch_knowledge_from_url_via_mcp(url: str) -> tuple[bool, str]:
     """Fetch knowledge from URL via enhanced asynchronous MCP service"""
-    from enhanced_mcp_client import call_fetch_mcp_async, call_deepwiki_mcp_async
+    from .enhanced_mcp_client import call_fetch_mcp_async, call_deepwiki_mcp_async
     
     # Intelligent selection of MCP service
     if "deepwiki.org" in url.lower():
@@ -136,7 +145,7 @@ def fetch_external_knowledge(reference_url: str) -> str:
         response = requests.head(url, timeout=10, allow_redirects=True)
         
         if response.status_code >= 400:
-            return f\"\"\"
+            return f"""
 ## ⚠️ Reference Link Status Notice
 **🔗 Provided link**: {url}
 **❌ Link status**: Not accessible (HTTP {response.status_code})
@@ -144,16 +153,16 @@ def fetch_external_knowledge(reference_url: str) -> str:
 - Please check if the link is correct
 - Or remove the reference link and use pure AI generation mode
 ---
-\"\"\"
+"""
             
     except Exception as e:
-        return f\"\"\"
+        return f"""
 ## 🔗 Reference Link Handling Instructions
 **📍 Provided Link**: {url}
 **🔍 Processing Status**: Unable to verify link availability temporarily ({str(e)[:100]})
 **🤖 AI Processing**: Will perform intelligent analysis based on creative content
 ---
-\"\"\"
+"""
     
     # Attempt to call MCP service
     logger.info(f"🔄 Attempting to call MCP service to fetch knowledge...")
@@ -163,7 +172,7 @@ def fetch_external_knowledge(reference_url: str) -> str:
     
     if success and knowledge and len(knowledge.strip()) > 50:
         if not any(keyword in knowledge.lower() for keyword in ['error', 'failed', 'unavailable']):
-            return f\"\"\"
+            return f"""
 ## 📚 External Knowledge Base Reference
 **🔗 Source Link**: {url}
 **✅ Fetch Status**: MCP service successfully fetched
@@ -171,19 +180,19 @@ def fetch_external_knowledge(reference_url: str) -> str:
 ---
 {knowledge}
 ---
-\"\"\"
+"""
     
     # MCP service failed or returned invalid content
     mcp_status = get_mcp_status_display()
     
-    return f\"\"\"
+    return f"""
 ## 🔗 External Knowledge Handling Instructions
 **📍 Reference Link**: {url}
 **🎯 Processing Method**: Intelligent analysis mode
 ** MCP Service Status**: 
 {mcp_status}
 ---
-\"\"\"
+"""
 
 def generate_development_plan(user_idea: str, reference_url: str = "") -> Tuple[str, str, str]:
     """
@@ -211,7 +220,7 @@ def generate_development_plan(user_idea: str, reference_url: str = "") -> Tuple[
     # In app.py strict flow, user might have already optimized it.
     
     system_prompt = config.ai_model.system_prompt
-    user_prompt = f\"\"\"
+    user_prompt = f"""
 Please generate a comprehensive product development plan based on the following information:
 
 User Idea:
@@ -226,13 +235,13 @@ Requirements:
 3. Tech stack recommendations
 4. Step-by-step implementation plan
 5. Mermaid diagrams for visualization
-\"\"\"
+"""
 
     explanation_manager.record_step("Prompt Engineering", "Complete", "Built system and user prompts")
     
     # 4. Call AI Model
     try:
-        from config import config
+        from .config import config
         headers = {
             "Authorization": f"Bearer {config.ai_model.api_key}",
             "Content-Type": "application/json"

@@ -1,3 +1,13 @@
+"""
+Utility Functions for Vibe-Coder.
+
+This module contains helper functions for:
+- Input validation.
+- URL validation.
+- Text processing and regex operations.
+- Content formatting and cleanup.
+"""
+
 import re
 import logging
 from datetime import datetime
@@ -368,7 +378,7 @@ def generate_enhanced_reference_info(url: str, source_type: str, error_msg: str 
     
     hint_text = " | ".join(content_hints) if content_hints else "📄 Web content"
     
-    reference_info = f\"\"\"
+    reference_info = f"""
 ## 🔗 {source_type} Reference
 
 **📍 Source link：** [{domain}]({url})
@@ -386,7 +396,7 @@ def generate_enhanced_reference_info(url: str, source_type: str, error_msg: str 
 - ✅ Enrich best practices
 
 ---
-\"\"\"
+"""
     
     if error_msg and not error_msg.startswith("❌"):
         reference_info += f"\\n**⚠️ Service status：** {error_msg}\\n"
@@ -526,7 +536,7 @@ def format_response(content: str) -> str:
         plan_content = parts[0].strip()
         prompts_content = '# AI编程助手提示词' + parts[1]
         enhanced_prompts = enhance_prompts_display(prompts_content)
-        formatted_content = f\"\"\"
+        formatted_content = f"""
 <div class="plan-header">
 # 🚀 AI-generated Development Plan
 <div class="meta-info">
@@ -539,9 +549,9 @@ def format_response(content: str) -> str:
 {enhance_markdown_structure(plan_content)}
 ---
 {enhanced_prompts}
-\"\"\"
+"""
     else:
-        formatted_content = f\"\"\"
+        formatted_content = f"""
 <div class="plan-header">
 # 🚀 AI-generated Development Plan
 <div class="meta-info">
@@ -552,6 +562,6 @@ def format_response(content: str) -> str:
 </div>
 ---
 {enhance_markdown_structure(content)}
-\"\"\"
+"""
     return formatted_content
 
